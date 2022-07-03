@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import javax.servlet.http.HttpServletResponse;
 import javax.swing.plaf.metal.MetalMenuBarUI;
 
@@ -17,7 +19,7 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    //join 페이지
+    //회원가입 페이지
     @GetMapping("/join")
     public String join(){
         return "join";
@@ -26,16 +28,19 @@ public class MemberController {
     @PostMapping("/join")
     public String join(HttpServletResponse response, Member member) {
         System.out.println(member);
-        return memberService.insertMember(member);
+        memberService.insertMember(member);
+        return "redirect:/login";
     }
 
-    //login 페이지
+    //로그인 페이지
     @GetMapping("/login")
     public String login() { return "login"; }
 
+  /*
     @PostMapping("/login")
     public String login(HttpServletResponse response, Member member){
         System.out.println("로그인1"+ member);
         return memberService.selectMember(member);
     }
+    */
 }

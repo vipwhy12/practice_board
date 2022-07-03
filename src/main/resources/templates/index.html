@@ -1,19 +1,55 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <link rel="stylesheet" href="css/styles.css">
     <meta charset="UTF-8">
     <title>Welcome to Practice site</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+       $(document).ready(function (){
+           let memberName = "[[${session.memberName}]]";
+           console.log("자바스크립트" + memberName);
+
+           if(memberName.length !== 0){
+               //document.getElementById("test2").style.visibility="hidden";
+               $("#test2").css('display', 'block')
+           } else {
+               //document.getElementById("test2").style.visibility="visible";
+               $("#test2").css('display', 'none')
+           }
+
+       });
+    </script>
+    <style>
+        #test2{
+            /* display: none;*/
+        }
+    </style>
+
 </head>
 <body>
     <header class="welcome-header">
-        <h1 class="welcome-header__title">Welcome to Test Board</h1>
+        <h1 class="welcome-header__title">Welcome to Test Page</h1>
     </header>
-    <a href="join">
-        <button> Sign Up</button>
-    </a>
-    <a href="login">
-        <button>login</button>
-    </a>
+
+        <span class="test" th:text="${session.memberName}" ></span>
+        <h2 id="test2">안녕하세요</h2>
+
+
+        <a href="join">
+            <button> Sign Up</button>
+        </a>
+
+
+        <a href="login">
+            <button>login</button>
+        </a>
+
+
+
+        <a href="board/list">
+            <button>board</button>
+        </a>
+
 </body>
 </html>
