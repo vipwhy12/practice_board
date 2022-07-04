@@ -1,10 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
+    <h1>게시판 상세페이지</h1>
+    <table bordercolor="black">
+        <thead>
+            <tr>
+                <th th:text="${boardDetail.title}"></th>
+                <td th:text="${#dates.format(boardDetail.time, 'yyyy-MM-dd')}"></td>
+                <th th:text="${boardDetail.member.name}" ></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td colspan="3">
+                    <div>
+                        <p th:text="${boardDetail.content}"></p>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div>
+        <a th:href="@{/boardUpdate/{no}(no = ${boardDetail.no})}">
+            <button> 수정하기 </button>
+        </a>
+    </div>
+
+    <div>
+        <a>
+            <button> 삭제하기 </button>
+        </a>
+    </div>
 
 </body>
 </html>

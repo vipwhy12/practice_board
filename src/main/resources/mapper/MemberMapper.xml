@@ -10,4 +10,8 @@
     <select id="selectMember" parameterType="com.practice.practice.model.Member" resultType="com.practice.practice.model.Member">
         select * from member where email=#{email};
     </select>
+
+    <select id="searchMemberName" parameterType="com.practice.practice.model.Member">
+        select name from member where member_no={memberNo};
+    </select>
 </mapper>
