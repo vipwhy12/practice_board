@@ -16,25 +16,21 @@ public class MemberService {
 
     private final MemberMapper memberMapper;
 
-    public String insertMember(Member member) {
+    //insert Member
+    public boolean insertMember(Member member) {
         log.info("insert member");
-        boolean isSuccessful = memberMapper.insertMember(member);
-
-        if (isSuccessful) {
-            log.info("success");
-            return "index";
-        } else {
-            log.error("error");
-            return "error";
-        }
+        return memberMapper.insertMember(member);
     }
 
+    //restAPI(회원조회)
     public ResponseEntity<Member> selectMember(Member member, HttpSession session){
         log.info("select member");
         Member memberInfo = memberMapper.selectMember(member);
 
         if (memberInfo != null) {
+            //log 확인
             log.info("success");
+
             //세션 값 설정
             System.out.println("MemberService 테스트" + memberInfo);
             session.setAttribute("memberNo", memberInfo.getNo());
@@ -43,7 +39,6 @@ public class MemberService {
             //세션 유지시간 설정(초단위)
             session.setMaxInactiveInterval(30*60);
             System.out.println(session.getAttribute("memberNo"));
-
             return ResponseEntity.ok().body(memberInfo);
         } else {
             log.error("error");

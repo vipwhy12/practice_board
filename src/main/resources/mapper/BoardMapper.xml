@@ -3,17 +3,15 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.practice.practice.mapper.BoardMapper">
+
     <insert id="insertBoard" parameterType="com.practice.practice.model.Board">
         insert into board(title, content, time, member_no, view) values (#{title}, #{content}, sysdate(), #{memberNo}, 0);
     </insert>
 
-    <select id="selectBoardAll">
-        select * from board;
+    <select id="selectBoardList" resultType="com.practice.practice.model.Board">
+        select no, title, time, member_no as memberNo from board;
     </select>
 
-    <select id="selectBoard">
-        select * from board where no = #{no};
-    </select>
     <delete id="deleteBoard">
         delete from board where no = #{no};
     </delete>

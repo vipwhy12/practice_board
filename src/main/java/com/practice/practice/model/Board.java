@@ -16,4 +16,6 @@ public class Board {
     private Date time;
     private int view;
     private int memberNo;
+
+
 }
