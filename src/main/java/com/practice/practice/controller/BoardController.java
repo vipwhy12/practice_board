@@ -29,6 +29,7 @@ public class BoardController {
     }
 
     //게시판 상세 페이지
+    //게시판 상세 페이지
     @GetMapping("board/{no}")
     public String detailBoard(@PathVariable("no") int no, Model model){
         Board boardDetail = boardService.selectBoardDetail(no);
