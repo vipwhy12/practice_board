@@ -1,20 +1,29 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>boardList</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+
+
 </head>
 <body>
     <h1> Welcome to Board </h1>
+    <div>
+        <a href="write">
+            <button>새로운 글 작성하기</button>
+        </a>
+    </div>
+
     <table>
         <thead>
-        <tr>
-            <th>번호</th>
-            <th>제목</th>
-            <th>작성자</th>
-            <th>작성일</th>
-        </tr>
+            <tr>
+                <th>번호</th>
+                <th>제목</th>
+                <th>작성자</th>
+                <th>작성일</th>
+            </tr>
         </thead>
         <tbody>
         <tr th:each="board : ${boardList}">
@@ -27,6 +36,8 @@
             <td th:text="${board.time}"></td>
         </tr>
         </tbody>
+
+
     </table>
 
 

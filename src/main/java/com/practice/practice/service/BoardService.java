@@ -31,5 +31,4 @@ public class BoardService {
     public Board selectBoardDetail(int no){
         return boardMapper.selectBoardDetail(no);
     }
-
 }
