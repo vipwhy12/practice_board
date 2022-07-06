@@ -40,6 +40,6 @@ public class BoardService {
     public boolean deleteBoard(int no){
         return boardMapper.deleteBoard(no);
     }
-
+    //
 
 }
