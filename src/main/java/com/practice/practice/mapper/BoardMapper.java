@@ -17,4 +17,10 @@ public interface BoardMapper {
 
     //게시판 상세보기 출력
     Board selectBoardDetail(int no);
+
+    //게시판 수정
+    boolean updateBoard(Board board);
+
+    //게시판 삭제
+    boolean deleteBoard(int no);
 }

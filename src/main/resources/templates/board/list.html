@@ -1,21 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>boardList</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function (){
+            let memberName = "[[${session.memberName}]]";
 
+            console.log("세션에 담긴 객체 : " + memberName);
 
-
-
+            if(memberName.length !== 0 ){
+                //세션에 객체가 담겼을 때
+                $(".insert-board").css('display', 'block');
+                $(document).on('click', '.insert-board', function (){
+                    location.href = 'write';                })
+            }else{
+                //세션에 객체가 담기지 않았을 때
+               $(".insert-board").css('display', 'none')
+            }
+        });
+    </script>
 </head>
 <body>
     <h1> Welcome to Board </h1>
-    <div>
-        <a href="write">
-            <button>새로운 글 작성하기</button>
-        </a>
-    </div>
-
     <table>
         <thead>
             <tr>
@@ -36,15 +44,10 @@
             <td th:text="${board.time}"></td>
         </tr>
         </tbody>
-
-
     </table>
 
-
-    <div>
-        <a href="write">
-            <button>새로운 글 작성하기</button>
-        </a>
+    <div class="insert-board">
+        <button>새로운 글 작성하기</button>
     </div>
 
 </body>

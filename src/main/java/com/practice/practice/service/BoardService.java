@@ -18,7 +18,6 @@ public class BoardService {
 
     //게시판 작성
     public boolean insertBoard(Board board) {
-        log.info("insert board");
         return boardMapper.insertBoard(board);
     }
 
@@ -27,8 +26,20 @@ public class BoardService {
         return boardMapper.selectBoardList();
     }
 
-
+    //게시판 상세 조회
     public Board selectBoardDetail(int no){
         return boardMapper.selectBoardDetail(no);
     }
+
+    //게시판 수정 조회
+    public boolean updateBoard(Board board){
+        return boardMapper.updateBoard(board);
+    }
+
+    //게시판 삭제
+    public boolean deleteBoard(int no){
+        return boardMapper.deleteBoard(no);
+    }
+
+
 }

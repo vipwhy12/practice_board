@@ -5,13 +5,16 @@
     <title>Title</title>
 </head>
 <body>
-    <h1>게시글을 작성해주세요</h1>
-    <form action="/board/write" method="post" class="board-write-from">
+    <h1>Update 페이지 입니다.</h1>
+    <form action="/board/update" method="post" class="board-write-from">
         <div>
-            <input name="title" type="text" class="board-write-from__title" placeholder="제목을 작성해주세요">
+            <input name="no" th:value="${boardUpdate.no}">
         </div>
         <div>
-            <textarea name="content" class="board-write-from__content" placeholder="게시물을 작성해주세요"></textarea>
+            <input name="title" type="text" class="board-write-from__title" th:value="${boardUpdate.title}">
+        </div>
+        <div>
+            <textarea name="content" class="board-write-from__content" th:text="${boardUpdate.content}" th:value="${boardUpdate.content}"></textarea>
         </div>
         <div>
             <button class="board-write__btn">수정완료</button>

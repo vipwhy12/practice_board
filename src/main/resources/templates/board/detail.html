@@ -1,8 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function (){
+            let memberName = "[[${session.memberName}]]";
+            let boardMemberName = "[[${boardDetail.member.name}]]";
+
+            console.log("세션에 담긴 회원 번호"+memberName);
+            console.log("세션에 담긴 게시판 회원 번호"+boardMemberName);
+
+            if (memberName === boardMemberName){
+                $(".board-detail-delete-button").css('display', 'block');
+                $(".board-detail-update-button").css('display', 'block');
+            } else {
+                $(".board-detail-delete-button").css('display', 'none');
+                $(".board-detail-update-button").css('display', 'none');
+            }
+        });
+    </script>
 </head>
 <body>
     <h1>게시판 상세페이지</h1>
@@ -25,13 +43,13 @@
         </tbody>
     </table>
 
-    <div>
-        <a th:href="@{/boardUpdate/{no}(no = ${boardDetail.no})}">
+    <div class="board-detail-update-button">
+        <a th:href="@{/board/update/{no}(no = ${boardDetail.no})}">
             <button> 수정하기 </button>
         </a>
     </div>
 
-    <div>
+    <div class="board-detail-delete-button">
         <a>
             <button> 삭제하기 </button>
         </a>

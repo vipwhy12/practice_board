@@ -38,4 +38,12 @@
         and b.no = #{no};
     </select>
 
+    <update id="updateBoard" parameterType="com.practice.practice.model.Board" >
+        update board set title=#{title}, content=#{content} where no=#{no};
+    </update>
+
+    <delete id="deleteBoard" parameterType="Iinteger">
+        delete from board where no=#{no};
+    </delete>
+
 </mapper>
