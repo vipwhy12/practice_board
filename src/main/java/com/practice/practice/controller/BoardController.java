@@ -71,10 +71,11 @@ public class BoardController {
     }
 
     @PostMapping("/board/write")
-    public String insertBoard(HttpSession session, Board board){
+    public String insertBoard(HttpSession session, Board board, Model model){
         //게시판 객체에 세션에 저장되어 있는 회원 번호를 설정
         board.setMemberNo((int)session.getAttribute("memberNo"));
         boolean isSuccessful = boardService.insertBoard(board);
+        model.addAttribute("insert", isSuccessful);
         log.info("insert board");
         if (isSuccessful) {
             log.info("success");
@@ -83,13 +84,19 @@ public class BoardController {
             log.error("error");
             return "error";
         }
-
     }
 
     //게시판 삭제 페이지
     @GetMapping("board/delete/{no}")
-    public String deleteBoard(){
-
-        return "/redirect:/";
+    public String deleteBoard(@PathVariable("no")int no){
+        boolean isSuccessful = boardService.deleteBoard(no);
+        log.info("delete board");
+        if(isSuccessful){
+            log.info("success");
+            return "/redirect:/board/list";
+        } else {
+            log.error("error");
+            return "error";
+        }
     }
 }

@@ -42,7 +42,7 @@
         update board set title=#{title}, content=#{content} where no=#{no};
     </update>
 
-    <delete id="deleteBoard" parameterType="Iinteger">
+    <delete id="deleteBoard" parameterType="Integer">
         delete from board where no=#{no};
     </delete>
 

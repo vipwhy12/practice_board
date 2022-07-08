@@ -19,7 +19,11 @@
                 $(".board-detail-delete-button").css('display', 'none');
                 $(".board-detail-update-button").css('display', 'none');
             }
+
         });
+
+
+
     </script>
 </head>
 <body>
@@ -50,7 +54,7 @@
     </div>
 
     <div class="board-detail-delete-button">
-        <a>
+        <a th:href="@{/board/delete/{no}(no = ${boardDetail.no})}">
             <button> 삭제하기 </button>
         </a>
     </div>
