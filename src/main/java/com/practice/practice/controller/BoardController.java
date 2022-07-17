@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -23,12 +24,47 @@ public class BoardController {
 
     //게시판 메인 페이지
     @GetMapping("/board/list")
-    public String readBoard(Model model, HttpSession session){
+    public String readBoard( Model model, HttpSession session){
+        int totalBoardCount = boardService.countBoard();
+        int pageNum = 10;
+        int offset = 0;
+        int limit = 0;
+        int totalPageOfNum = totalBoardCount / pageNum;
+
+        if(totalBoardCount <= 10){
+            totalPageOfNum = 1;
+            limit = totalBoardCount;
+        }else {
+            if (totalBoardCount % pageNum != 0){
+                totalPageOfNum += 1;
+                limit = 10;
+            }
+        }
+        //세션에 회원 아이디 저장
         model.addAttribute("id", session);
-        List<Board> boardList = boardService.selectBoardList();
+        model.addAttribute("totalPageOfNum", totalPageOfNum);
+        model.addAttribute("offset",offset);
+        model.addAttribute("limit",limit);
+
+        //게시판 리스트 불러오기, 모델에 저장
+        List<Board> boardList = boardService.selectBoardList(limit,offset);
         model.addAttribute("boardList", boardList);
         return "/board/list";
     }
+
+    @GetMapping("/board/list/page")
+    public String readBoard(@RequestParam int page, @RequestParam int totalPageOfNum, Model model, HttpSession session){
+        int offset = (page - 1) * 10;
+        int limit = page * 10;
+        List<Board> boardList = boardService.selectBoardList(limit,offset);
+        model.addAttribute("boardList", boardList);
+        model.addAttribute("totalPageOfNum", totalPageOfNum);
+        model.addAttribute("offset",offset);
+        model.addAttribute("limit",limit);
+        return "/board/list";
+    }
+
+
 
     //게시판 상세 페이지
     @GetMapping("board/{no}")
@@ -43,17 +79,12 @@ public class BoardController {
     public String updateBoard(@PathVariable("no")int no, Model model){
         Board boardUpdate = boardService.selectBoardDetail(no);
         model.addAttribute("boardUpdate", boardUpdate);
-        System.out.println("update페이지 잘 실행했습니다!");
         return  "/board/update";
     }
 
     @PostMapping("board/update")
     public String updateBoard(HttpSession session, Board board){
-        board.setMemberNo((int)session.getAttribute("memberNo"));
-        System.out.println("boardUpdateTest1"+board);
-
         boolean isSuccessful = boardService.updateBoard(board);
-        System.out.println("boardUpdateTest2"+board);
 
         if(isSuccessful){
             log.info("success");
@@ -86,17 +117,17 @@ public class BoardController {
         }
     }
 
-    //게시판 삭제 페이지
-    @GetMapping("board/delete/{no}")
-    public String deleteBoard(@PathVariable("no")int no){
+    @GetMapping("/board/delete/{no}")
+    public String deleteBoard(@PathVariable("no")int no, Model model){
         boolean isSuccessful = boardService.deleteBoard(no);
-        log.info("delete board");
-        if(isSuccessful){
+        log.info("insert board");
+        if (isSuccessful) {
             log.info("success");
-            return "/redirect:/board/list";
+            return "redirect:/board/list";
         } else {
             log.error("error");
             return "error";
         }
     }
+
 }

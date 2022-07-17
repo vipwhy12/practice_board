@@ -8,7 +8,7 @@
     <h1>Update 페이지 입니다.</h1>
     <form action="/board/update" method="post" class="board-write-from">
         <div>
-            <input name="no" th:value="${boardUpdate.no}">
+            <input name="no" type="hidden" th:value="${boardUpdate.no}">
         </div>
         <div>
             <input name="title" type="text" class="board-write-from__title" th:value="${boardUpdate.title}">

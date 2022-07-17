@@ -13,17 +13,14 @@
             console.log("세션에 담긴 게시판 회원 번호"+boardMemberName);
 
             if (memberName === boardMemberName){
-                $(".board-detail-delete-button").css('display', 'block');
-                $(".board-detail-update-button").css('display', 'block');
+                $(".board-detail__delete-button").css('display', 'block');
+                $(".board-detail__update-button").css('display', 'block');
             } else {
-                $(".board-detail-delete-button").css('display', 'none');
-                $(".board-detail-update-button").css('display', 'none');
+                $(".board-detail__delete-button").css('display', 'none');
+                $(".board-detail__update-button").css('display', 'none');
             }
 
         });
-
-
-
     </script>
 </head>
 <body>
@@ -47,15 +44,15 @@
         </tbody>
     </table>
 
-    <div class="board-detail-update-button">
+    <div class="board-detail__update-button">
         <a th:href="@{/board/update/{no}(no = ${boardDetail.no})}">
-            <button> 수정하기 </button>
+            <button> 수정 </button>
         </a>
     </div>
 
-    <div class="board-detail-delete-button">
+    <div class="board-detail__delete-button">
         <a th:href="@{/board/delete/{no}(no = ${boardDetail.no})}">
-            <button> 삭제하기 </button>
+            <button> 삭제 </button>
         </a>
     </div>
 

@@ -22,13 +22,18 @@ public class BoardService {
     }
 
     //게시판 조회
-    public List<Board> selectBoardList() {
-        return boardMapper.selectBoardList();
+    public List<Board> selectBoardList(int limit, int offset) {
+        return boardMapper.selectBoardList(limit, offset);
     }
 
     //게시판 상세 조회
     public Board selectBoardDetail(int no) {
         return boardMapper.selectBoardDetail(no);
+    }
+
+    //게시판 전체 개수 조회
+    public int countBoard(){
+        return boardMapper.countBoard();
     }
 
     //게시판 수정 조회
@@ -37,9 +42,10 @@ public class BoardService {
     }
 
     //게시판 삭제
-    public boolean deleteBoard(int no) {
+    public boolean deleteBoard(int no){
         return boardMapper.deleteBoard(no);
     }
+
 }
 
 

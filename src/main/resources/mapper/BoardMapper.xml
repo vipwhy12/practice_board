@@ -25,10 +25,17 @@
         insert into board(title, content, time, member_no, view) values (#{title}, #{content}, sysdate(), #{memberNo}, 0);
     </insert>
 
+
     <select id="selectBoardList" resultType="com.practice.practice.model.Board" resultMap="Board">
         select b.no, b.title, b.time, m.name
         from board b, member m
-        where m.no = b.member_no;
+        where m.no = b.member_no
+        order by time desc
+        limit #{limit} offset #{offset};
+    </select>
+
+    <select id="countBoard" parameterType="Integer" resultType="Integer">
+        select count(*) from board;
     </select>
 
     <select id="selectBoardDetail"  parameterType="Integer" resultMap="Board">
@@ -42,7 +49,7 @@
         update board set title=#{title}, content=#{content} where no=#{no};
     </update>
 
-    <delete id="deleteBoard" parameterType="Integer">
+    <delete id="deleteBoard">
         delete from board where no=#{no};
     </delete>
 

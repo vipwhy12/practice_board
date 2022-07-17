@@ -7,9 +7,7 @@
     <script>
         $(document).ready(function (){
             let memberName = "[[${session.memberName}]]";
-
             console.log("세션에 담긴 객체 : " + memberName);
-
             if(memberName.length !== 0 ){
                 //세션에 객체가 담겼을 때
                 $(".insert-board").css('display', 'block');
@@ -19,13 +17,6 @@
                 //세션에 객체가 담기지 않았을 때
                $(".insert-board").css('display', 'none')
             }
-
-            let isSuccessful = '[[${insert}]]';
-            if(isSuccessful.length !== 0){
-                alert("게시판 작성을 완료하였습니다.");
-            }
-
-
         });
 
 
@@ -43,17 +34,21 @@
             </tr>
         </thead>
         <tbody>
+
+
         <tr th:each="board : ${boardList}">
-            <td th:text="${board.no}">
-            </td>
-            <td>
-                <a th:text="${board.title}" th:href="@{/board/{no}(no = ${board.no})}"></a>
-            </td>
+            <td ><span th:text="${boardStat.count} + ${offset}  "></span></td>
+            <td><a th:text="${board.title}" th:href="@{/board/{no}(no = ${board.no})}"></a></td>
             <td th:text="${board.member.name}"></td>
             <td th:text="${board.time}"></td>
         </tr>
         </tbody>
     </table>
+
+    <th:block th:each="page : ${#numbers.sequence(1,totalPageOfNum)}" >
+        <a th:text="${page}" th:href="@{/board/list/page(page=${page},totalPageOfNum=${totalPageOfNum})}"></a>
+    </th:block>
+
 
     <div class="insert-board">
         <button>새로운 글 작성하기</button>
