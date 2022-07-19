@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>boardList</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/static/icons/fontawesome/all.js"></script>
     <script>
         $(document).ready(function (){
             let memberName = "[[${session.memberName}]]";
@@ -37,7 +38,7 @@
 
 
         <tr th:each="board : ${boardList}">
-            <td ><span th:text="${boardStat.count} + ${offset}  "></span></td>
+            <td><span th:text="${boardStat.count} + ${offset}  "></span></td>
             <td><a th:text="${board.title}" th:href="@{/board/{no}(no = ${board.no})}"></a></td>
             <td th:text="${board.member.name}"></td>
             <td th:text="${board.time}"></td>
@@ -46,10 +47,11 @@
     </table>
 
     <th:block th:each="page : ${#numbers.sequence(1,totalPageOfNum)}" >
-        <a th:text="${page}" th:href="@{/board/list/page(page=${page},totalPageOfNum=${totalPageOfNum})}"></a>
+        <a th:text="${page}" th:href="@{/board/list(page=${page},totalPage=${totalPageOfNum})}"></a>
     </th:block>
 
 
+    <i class="fa-brands fa-instagram"></i>
     <div class="insert-board">
         <button>새로운 글 작성하기</button>
     </div>

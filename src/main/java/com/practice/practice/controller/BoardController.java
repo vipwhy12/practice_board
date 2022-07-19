@@ -4,12 +4,10 @@ import com.practice.practice.model.Board;
 import com.practice.practice.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -24,47 +22,34 @@ public class BoardController {
 
     //게시판 메인 페이지
     @GetMapping("/board/list")
-    public String readBoard( Model model, HttpSession session){
-        int totalBoardCount = boardService.countBoard();
-        int pageNum = 10;
-        int offset = 0;
-        int limit = 0;
-        int totalPageOfNum = totalBoardCount / pageNum;
+    public String readBoard( Model model, @RequestParam(value = "page", required = false, defaultValue ="") int page,
+                             @RequestParam(value = "totalPageNum", required = false, defaultValue = "") int totalPageNum){
+        //총 개시글 갯수
+        int totalBoardNum = boardService.countBoard();
 
-        if(totalBoardCount <= 10){
+        //가져올 게시글의 수량
+        int offset = (page - 1) * 10;;
+        final int LIMIT = 10;
+
+        int totalPageOfNum = totalBoardNum/LIMIT;
+
+        //총 게시물이 10개 이하일 때
+        if(totalBoardNum <= 10){
             totalPageOfNum = 1;
-            limit = totalBoardCount;
         }else {
-            if (totalBoardCount % pageNum != 0){
+            //총 게시물이 10개 이상, 나머지가 0이 아닐때,
+            if (totalBoardNum % LIMIT != 0){
                 totalPageOfNum += 1;
-                limit = 10;
             }
         }
-        //세션에 회원 아이디 저장
-        model.addAttribute("id", session);
-        model.addAttribute("totalPageOfNum", totalPageOfNum);
-        model.addAttribute("offset",offset);
-        model.addAttribute("limit",limit);
 
         //게시판 리스트 불러오기, 모델에 저장
-        List<Board> boardList = boardService.selectBoardList(limit,offset);
+        List<Board> boardList = boardService.selectBoardList(LIMIT,offset);
         model.addAttribute("boardList", boardList);
-        return "/board/list";
-    }
-
-    @GetMapping("/board/list/page")
-    public String readBoard(@RequestParam int page, @RequestParam int totalPageOfNum, Model model, HttpSession session){
-        int offset = (page - 1) * 10;
-        int limit = page * 10;
-        List<Board> boardList = boardService.selectBoardList(limit,offset);
-        model.addAttribute("boardList", boardList);
-        model.addAttribute("totalPageOfNum", totalPageOfNum);
+        model.addAttribute("totalBoardNum", totalBoardNum);
         model.addAttribute("offset",offset);
-        model.addAttribute("limit",limit);
         return "/board/list";
     }
-
-
 
     //게시판 상세 페이지
     @GetMapping("board/{no}")
