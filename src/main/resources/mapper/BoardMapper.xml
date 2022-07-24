@@ -25,7 +25,6 @@
         insert into board(title, content, time, member_no, view) values (#{title}, #{content}, sysdate(), #{memberNo}, 0);
     </insert>
 
-
     <select id="selectBoardList" resultType="com.practice.practice.model.Board" resultMap="Board">
         select b.no, b.title, b.time, m.name
         from board b, member m

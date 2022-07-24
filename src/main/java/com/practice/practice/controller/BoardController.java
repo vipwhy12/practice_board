@@ -22,32 +22,24 @@ public class BoardController {
 
     //게시판 메인 페이지
     @GetMapping("/board/list")
-    public String readBoard( Model model, @RequestParam(value = "page", required = false, defaultValue ="") int page,
-                             @RequestParam(value = "totalPageNum", required = false, defaultValue = "") int totalPageNum){
-        //총 개시글 갯수
-        int totalBoardNum = boardService.countBoard();
-
-        //가져올 게시글의 수량
-        int offset = (page - 1) * 10;;
+    public String readBoard(Model model, @RequestParam(value = "page", required = false, defaultValue = "1") String page,
+                             @RequestParam(value = "totalPageNum", required = false, defaultValue = "1") String totalPageNum){
         final int LIMIT = 10;
 
-        int totalPageOfNum = totalBoardNum/LIMIT;
+        int offset = (Integer.parseInt(page) - 1) * 10;
+        int totalBoardNum = boardService.countBoard();
 
-        //총 게시물이 10개 이하일 때
-        if(totalBoardNum <= 10){
-            totalPageOfNum = 1;
-        }else {
-            //총 게시물이 10개 이상, 나머지가 0이 아닐때,
-            if (totalBoardNum % LIMIT != 0){
-                totalPageOfNum += 1;
-            }
+        int totalPage = Integer.parseInt(totalPageNum);
+        if(totalBoardNum >= 10 && totalBoardNum % LIMIT != 0){
+            totalPage = totalBoardNum / LIMIT + 1 ;
         }
 
-        //게시판 리스트 불러오기, 모델에 저장
         List<Board> boardList = boardService.selectBoardList(LIMIT,offset);
         model.addAttribute("boardList", boardList);
         model.addAttribute("totalBoardNum", totalBoardNum);
-        model.addAttribute("offset",offset);
+        model.addAttribute("offset", offset);
+        model.addAttribute("totalPageNum",totalPage);
+
         return "/board/list";
     }
 

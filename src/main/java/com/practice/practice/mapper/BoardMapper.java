@@ -9,6 +9,8 @@ import java.util.Map;
 
 @Mapper
 public interface BoardMapper {
+
+
     //게시판 입력
     boolean insertBoard(Board board);
 

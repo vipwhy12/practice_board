@@ -19,8 +19,6 @@
                $(".insert-board").css('display', 'none')
             }
         });
-
-
     </script>
 </head>
 <body>
@@ -35,19 +33,17 @@
             </tr>
         </thead>
         <tbody>
-
-
-        <tr th:each="board : ${boardList}">
-            <td><span th:text="${boardStat.count} + ${offset}  "></span></td>
-            <td><a th:text="${board.title}" th:href="@{/board/{no}(no = ${board.no})}"></a></td>
-            <td th:text="${board.member.name}"></td>
-            <td th:text="${board.time}"></td>
-        </tr>
+            <tr th:each="board : ${boardList}">
+                <td><span th:text="${boardStat.count} + ${offset}  "></span></td>
+                <td><a th:text="${board.title}" th:href="@{/board/{no}(no = ${board.no})}"></a></td>
+                <td th:text="${board.member.name}"></td>
+                <td th:text="${board.time}"></td>
+            </tr>
         </tbody>
     </table>
 
-    <th:block th:each="page : ${#numbers.sequence(1,totalPageOfNum)}" >
-        <a th:text="${page}" th:href="@{/board/list(page=${page},totalPage=${totalPageOfNum})}"></a>
+    <th:block th:each="page : ${#numbers.sequence(1,totalPageNum)}" >
+        <a th:text="${page}" th:href="@{/board/list(page=${page},totalPage=${totalPageNum})}"></a>
     </th:block>
 
 
