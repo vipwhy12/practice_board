@@ -38,7 +38,7 @@ public class BoardController {
         model.addAttribute("boardList", boardList);
         model.addAttribute("totalBoardNum", totalBoardNum);
         model.addAttribute("offset", offset);
-        model.addAttribute("totalPageNum",totalPage);
+        model.addAttribute("totalPage",totalPage);
 
         return "/board/list";
     }

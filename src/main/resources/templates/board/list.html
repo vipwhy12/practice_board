@@ -7,18 +7,53 @@
     <script src="/static/icons/fontawesome/all.js"></script>
     <script>
         $(document).ready(function (){
-            let memberName = "[[${session.memberName}]]";
-            console.log("세션에 담긴 객체 : " + memberName);
-            if(memberName.length !== 0 ){
-                //세션에 객체가 담겼을 때
+            const SHOW_PAGE = 5;
+
+            const memberName = "[[${session.memberName}]]";
+            let totalPage = "[[${totalPage}]]";
+            let first = 0;
+            let last = 0;
+            let page =  Number(totalPage) / SHOW_PAGE;
+
+            //세션에 객체가 담겼을 때
+            if(memberName.length !== 0){
                 $(".insert-board").css('display', 'block');
                 $(document).on('click', '.insert-board', function (){
-                    location.href = 'write';                })
+                    location.href = 'write';
+                })
             }else{
-                //세션에 객체가 담기지 않았을 때
                $(".insert-board").css('display', 'none')
             }
+
+            if(totalPage <= SHOW_PAGE){
+                for(let i = 0; i < totalPage ; i++){
+                    $(".prev").after("<a href='/board/list?page=i'>i</a>")
+                }
+            }else {
+                if(totalPage % SHOW_PAGE !== 0){
+                    page += 1;
+                }
+                for(let i = 0; i <= SHOW_PAGE ; i++){
+                    $(".prev").append("<a href='/board/list?page="+ page + "'><span>" + i +"</span></a>");
+                }
+            }
+
         });
+
+        $(function (){
+            const totalPage = '[[${totalPage}]]';
+            let page = 0;
+            //prev 버튼이 눌렸을때
+            $('.prev').on("click", function (){
+
+            })
+
+            $('.next').on("click", function (){
+
+            })
+        });
+
+
     </script>
 </head>
 <body>
@@ -42,15 +77,27 @@
         </tbody>
     </table>
 
-    <th:block th:each="page : ${#numbers.sequence(1,totalPageNum)}" >
-        <a th:text="${page}" th:href="@{/board/list(page=${page},totalPage=${totalPageNum})}"></a>
+    <div class="pagination">
+        <a class="prev" href="/board/list">
+            <i class="fa fa-chevron-circle-left" aria-hidden="true"></i>
+        </a>
+        <a class="next" th:href="@{/board/list(page=${page},totalPage=${totalPage})}">
+            <i class="fa fa-chevron-circle-right" aria-hidden="true"></i>
+        </a>
+    </div>
+
+
+
+    <th:block th:each="page : ${#numbers.sequence(1,totalPage)}" >
+        <a th:text="${page}" th:href="@{/board/list(page=${page},totalPage=${totalPage})}"></a>
     </th:block>
 
 
-    <i class="fa-brands fa-instagram"></i>
+
     <div class="insert-board">
         <button>새로운 글 작성하기</button>
     </div>
 
+    <script src="https://kit.fontawesome.com/6478f529f2.js" crossorigin="anonymous"></script>
 </body>
 </html>
