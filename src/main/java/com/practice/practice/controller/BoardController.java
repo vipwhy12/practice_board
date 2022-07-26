@@ -22,24 +22,23 @@ public class BoardController {
 
     //게시판 메인 페이지
     @GetMapping("/board/list")
-    public String readBoard(Model model, @RequestParam(value = "page", required = false, defaultValue = "1") String page,
-                             @RequestParam(value = "totalPageNum", required = false, defaultValue = "1") String totalPageNum){
+    public String readBoard(Model model, @RequestParam(value = "page", required = false, defaultValue = "1") String page){
+        int totalPage = 1;
+
         final int LIMIT = 10;
-
-        int offset = (Integer.parseInt(page) - 1) * 10;
         int totalBoardNum = boardService.countBoard();
+        int offset = (Integer.parseInt(page) - 1) * LIMIT;
 
-        int totalPage = Integer.parseInt(totalPageNum);
-        if(totalBoardNum >= 10 && totalBoardNum % LIMIT != 0){
+        if(totalBoardNum >= LIMIT && totalBoardNum % LIMIT != 0){
             totalPage = totalBoardNum / LIMIT + 1 ;
         }
 
         List<Board> boardList = boardService.selectBoardList(LIMIT,offset);
         model.addAttribute("boardList", boardList);
-        model.addAttribute("totalBoardNum", totalBoardNum);
         model.addAttribute("offset", offset);
         model.addAttribute("totalPage",totalPage);
-
+        model.addAttribute("totalBoardNum", totalBoardNum);
+        model.addAttribute("page", page);
         return "/board/list";
     }
 

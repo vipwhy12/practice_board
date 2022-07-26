@@ -7,13 +7,12 @@
     <script src="/static/icons/fontawesome/all.js"></script>
     <script>
         $(document).ready(function (){
-            const SHOW_PAGE = 5;
-
             const memberName = "[[${session.memberName}]]";
-            let totalPage = "[[${totalPage}]]";
-            let first = 0;
-            let last = 0;
-            let page =  Number(totalPage) / SHOW_PAGE;
+
+            let totalPage = Number("[[${totalPage}]]");
+            let page =  Number("[[${page}]]");
+
+            const SHOW_PAGE = 5;
 
             //세션에 객체가 담겼을 때
             if(memberName.length !== 0){
@@ -22,38 +21,51 @@
                     location.href = 'write';
                 })
             }else{
-               $(".insert-board").css('display', 'none')
+                $(".insert-board").css('display', 'none')
             }
 
+            $('.prev').on("click", function (event){
+                event.preventDefault();
+                document.location.href = "/board/list?page="+ (page - 1);
+                console.log("prev가 실행되었습니다.");
+            })
+
+            $('.next').on("click", function (event){
+                event.preventDefault();
+                document.location.href = "/board/list?page="+ (page + 1);
+                console.log("next 실행되었습니다.");
+            })
+
+            if(page === 1){
+                $('.prev').off("click");
+            }
+
+            if(page === totalPage){
+                $('.next').off("click");
+            }
+
+            //총 페이지의 수가 5개 이하일때
             if(totalPage <= SHOW_PAGE){
-                for(let i = 0; i < totalPage ; i++){
-                    $(".prev").after("<a href='/board/list?page=i'>i</a>")
+                for(let i = totalPage; i > totalPage ; i--){
+                    $(".prev").after("<a href='/board/list?page="+ i + "'><span>" + i +"</span></a>");
                 }
             }else {
-                if(totalPage % SHOW_PAGE !== 0){
-                    page += 1;
+                for(let i = page + 3; i >= page - 3; i-- ){
+                    if(i > 0 && i <= totalPage){
+                        console.log(i);
+                        $(".prev").after("<a href='/board/list?page="+ i + "'><span>" + i +"</span></a>");
+                    }
                 }
-                for(let i = 0; i <= SHOW_PAGE ; i++){
-                    $(".prev").append("<a href='/board/list?page="+ page + "'><span>" + i +"</span></a>");
+                if(page > 5){
+                    $(".prev").after("<a href='/board/list?page=1'><span>1</span></a>" +
+                        "<a><span><i class=\"fa fa-ellipsis-h\" aria-hidden=\"true\"></i></span></a>");
+                }
+                if(page < totalPage - 5){
+                    $(".next").before("<a><span><i class=\"fa fa-ellipsis-h\" aria-hidden=\"true\"></i></span></a>" +
+                        "<a href='/board/list?page="+ totalPage + "'><span>" + totalPage +"</span></a>");
                 }
             }
-
         });
-
-        $(function (){
-            const totalPage = '[[${totalPage}]]';
-            let page = 0;
-            //prev 버튼이 눌렸을때
-            $('.prev').on("click", function (){
-
-            })
-
-            $('.next').on("click", function (){
-
-            })
-        });
-
-
     </script>
 </head>
 <body>
@@ -78,21 +90,13 @@
     </table>
 
     <div class="pagination">
-        <a class="prev" href="/board/list">
+        <a class="prev">
             <i class="fa fa-chevron-circle-left" aria-hidden="true"></i>
         </a>
-        <a class="next" th:href="@{/board/list(page=${page},totalPage=${totalPage})}">
+        <a class="next">
             <i class="fa fa-chevron-circle-right" aria-hidden="true"></i>
         </a>
     </div>
-
-
-
-    <th:block th:each="page : ${#numbers.sequence(1,totalPage)}" >
-        <a th:text="${page}" th:href="@{/board/list(page=${page},totalPage=${totalPage})}"></a>
-    </th:block>
-
-
 
     <div class="insert-board">
         <button>새로운 글 작성하기</button>
