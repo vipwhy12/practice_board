@@ -13,6 +13,7 @@ public class Comment {
     private int no;
     private String content;
     private Date time;
-    private int member_no;
-    private int board_no;
+    private int memberNo;
+    private int boardNo;
+    private int parentId;
 }
